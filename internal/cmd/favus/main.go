@@ -11,16 +11,16 @@ import (
 )
 
 func main() {
-	logger := utils.NewLogger()
+	// logger := utils.NewLogger() // NewLogger가 더 이상 필요 없으므로 제거
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		logger.Fatal("Failed to load configuration: %v", err)
+		utils.Fatal("Failed to load configuration: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 	}
 
-	s3Uploader, err := uploader.NewS3Uploader(cfg, logger)
+	s3Uploader, err := uploader.NewS3Uploader(cfg) // logger 인자 제거
 	if err != nil {
-		logger.Fatal("Failed to initialize S3 uploader: %v", err)
+		utils.Fatal("Failed to initialize S3 uploader: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 	}
 
 	if len(os.Args) < 2 {
@@ -38,50 +38,50 @@ func main() {
 	switch command {
 	case "upload":
 		if len(os.Args) != 4 {
-			logger.Fatal("Usage: favus upload <local_file_path> <s3_key>")
+			utils.Fatal("Usage: favus upload <local_file_path> <s3_key>") // logger.Fatal 대신 utils.Fatal 사용
 		}
 		localFilePath := os.Args[2]
 		s3Key := os.Args[3]
 		if err := s3Uploader.UploadFile(localFilePath, s3Key); err != nil {
-			logger.Fatal("Upload failed: %v", err)
+			utils.Fatal("Upload failed: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 		}
-		logger.Info("File uploaded successfully.")
+		utils.Info("File uploaded successfully.") // logger.Info 대신 utils.Info 사용
 	case "delete":
 		if len(os.Args) != 3 {
-			logger.Fatal("Usage: favus delete <s3_key>")
+			utils.Fatal("Usage: favus delete <s3_key>") // logger.Fatal 대신 utils.Fatal 사용
 		}
 		s3Key := os.Args[2]
 		if err := s3Uploader.DeleteFile(s3Key); err != nil {
-			logger.Fatal("Deletion failed: %v", err)
+			utils.Fatal("Deletion failed: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 		}
-		logger.Info("File deleted successfully.")
+		utils.Info("File deleted successfully.") // logger.Info 대신 utils.Info 사용
 	case "resume":
 		if len(os.Args) != 3 {
-			logger.Fatal("Usage: favus resume <upload_status_file_path>")
+			utils.Fatal("Usage: favus resume <upload_status_file_path>") // logger.Fatal 대신 utils.Fatal 사용
 		}
 		statusFilePath := os.Args[2]
-		resumeUploader := uploader.NewResumeUploader(s3Uploader.S3Client, logger)
+		resumeUploader := uploader.NewResumeUploader(s3Uploader.S3Client) // logger 인자 제거
 		if err := resumeUploader.ResumeUpload(statusFilePath); err != nil {
-			logger.Fatal("Resume upload failed: %v", err)
+			utils.Fatal("Resume upload failed: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 		}
-		logger.Info("Upload resumed and completed successfully.")
+		utils.Info("Upload resumed and completed successfully.") // logger.Info 대신 utils.Info 사용
 	case "list-uploads":
 		if len(os.Args) != 2 {
-			logger.Fatal("Usage: favus list-uploads")
+			utils.Fatal("Usage: favus list-uploads") // logger.Fatal 대신 utils.Fatal 사용
 		}
 		uploads, err := s3Uploader.ListMultipartUploads()
 		if err != nil {
-			logger.Fatal("Failed to list multipart uploads: %v", err)
+			utils.Fatal("Failed to list multipart uploads: %v", err) // logger.Fatal 대신 utils.Fatal 사용
 		}
 		if len(uploads) == 0 {
-			logger.Info("No ongoing multipart uploads found.")
+			utils.Info("No ongoing multipart uploads found.") // logger.Info 대신 utils.Info 사용
 			return
 		}
-		logger.Info("Ongoing multipart uploads:")
+		utils.Info("Ongoing multipart uploads:") // logger.Info 대신 utils.Info 사용
 		for _, upload := range uploads {
-			logger.Info("  UploadID: %s, Key: %s, Initiated: %s", *upload.UploadId, *upload.Key, upload.Initiated.Format(time.RFC3339))
+			utils.Info("  UploadID: %s, Key: %s, Initiated: %s", *upload.UploadId, *upload.Key, upload.Initiated.Format(time.RFC3339))
 		}
 	default:
-		logger.Fatal("Unknown command: %s", command)
+		utils.Fatal("Unknown command: %s", command) // logger.Fatal 대신 utils.Fatal 사용
 	}
 }
