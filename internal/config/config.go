@@ -3,21 +3,21 @@ package config
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 const DefaultChunkSize = 1024 * 1024 // 1 MB
 
 type Config struct {
-	AwsRegion   string
+	AwsRegion    string
 	S3BucketName string
-	ChunkSize   int64
+	ChunkSize    int64
 }
 
 func LoadConfig() (*Config, error) {
-	fmt.Printf("Loading config from: %s\n", path)
 	region := os.Getenv("AWS_REGION")
 	bucketName := os.Getenv("S3_BUCKET_NAME")
-	chunkSize := os.Getenv("CHUNK_SIZE")
+	chunkSizeStr := os.Getenv("CHUNK_SIZE")
 
 	if region == "" {
 		return nil, fmt.Errorf("AWS_REGION environment variable is not set")
@@ -43,8 +43,8 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
-		AwsRegion:   region,
+		AwsRegion:    region,
 		S3BucketName: bucketName,
-		ChunkSize:   chunkSize,
+		ChunkSize:    chunkSize,
 	}, nil
 }

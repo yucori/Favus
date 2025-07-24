@@ -3,12 +3,12 @@ package uploader
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/your-org/favus/internal/chunker" // Update with your actual module path
-	"github.com/your-org/favus/pkg/utils"        // Update with your actual module path
+	"github.com/yucori/Favus/internal/chunker" // Update with your actual module path
+	"github.com/yucori/Favus/pkg/utils"        // Update with your actual module path
 )
 
 // ResumeUploader allows resuming a multipart upload.

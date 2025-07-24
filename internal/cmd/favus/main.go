@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
-	"github.com/your-org/favus/internal/config"   // Update with your actual module path
-	"github.com/your-org/favus/internal/uploader" // Update with your actual module path
-	"github.com/your-org/favus/pkg/utils"         // Update with your actual module path
+	"github.com/yucori/Favus/internal/config"   // Update with your actual module path
+	"github.com/yucori/Favus/internal/uploader" // Update with your actual module path
+	"github.com/yucori/Favus/pkg/utils"         // Update with your actual module path
 )
 
 func main() {
